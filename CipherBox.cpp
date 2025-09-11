@@ -11,7 +11,7 @@ bool isAlpha(char c) {
   return (c>='A' && c<='Z') || (c>='a' && c<='z');
 }
 bool isUpper(char c) {
-  return (c>='A' && c<='z');
+  return (c>='A' && c<='Z');
 }
 char toUpper (char c)
 {
