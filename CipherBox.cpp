@@ -97,7 +97,7 @@ string decrypt(){
 }
 };
 
-class  CaesarCipher : public Cipher{
+class  CaesarCipher: public Cipher{
 int shift;
 public:
 CaesarCiphar(int s = 3){
@@ -106,5 +106,27 @@ shift = s;
 string encrypt(){
   Helper u;
   string r = "" "";
-
-
+for(inti = 0; i < message.length(); i++){
+char c = message{i};
+if(u.isAlpha(c)){
+char b = u.isUpper(c)? 'A': 'a';
+r += char(((c-b+shift)%26)+b);
+}
+else r += c;
+}
+return r;
+}
+string decrypt(){
+  Helperu;
+string r = "" "";
+for(int i = 0; i < message.length(); i++){
+char c = message{i};
+if(u.isAlpha(c)){
+char b = u.isUpper(c)?'A': 'a';
+r += char(((c - b - shift + 26) % 26) + b);
+}
+else r +=c;
+}
+return r;
+}
+};
