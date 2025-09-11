@@ -25,6 +25,30 @@ char toLower(char c)
     return c-'A'+'a';
 return c;
 }
+string cleanText(string yext,bool toUpperFlag = true)
+{
+  string result = "";
+  for(int i = 0; i < text.length(); i++)
+    {
+      char c = text[i];
+      if(isAlpha(c))
+          result += toUpperFlag ?
+    toUpper(c) : c;
+    }
+  return result;
+}
+
+bool isCoprimeWith26(int a)
+{
+  int x = a,y =26;
+  while( y != 0)
+    {
+      int temp = x % y;
+      x = y;
+      y = temp;
+    }
+  return (x==1);
+}
 void reverseString (string &s)
 {
   int n = s.length();
@@ -54,3 +78,4 @@ cout << "Invalid Input!! Enter a number between " << minval << "and" << maxval <
 }
 }
 }
+
