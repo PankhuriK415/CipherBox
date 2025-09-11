@@ -100,13 +100,13 @@ string decrypt(){
 class  CaesarCipher: public Cipher{
 int shift;
 public:
-CaesarCiphar(int s = 3){
+CaesarCipher(int s = 3){
 shift = s;
 }
 string encrypt(){
   Helper u;
   string r = "" "";
-for(inti = 0; i < message.length(); i++){
+for(int i = 0; i < message.length(); i++){
 char c = message{i};
 if(u.isAlpha(c)){
 char b = u.isUpper(c)? 'A': 'a';
@@ -117,7 +117,7 @@ else r += c;
 return r;
 }
 string decrypt(){
-  Helperu;
+  Helper u;
 string r = "" "";
 for(int i = 0; i < message.length(); i++){
 char c = message{i};
