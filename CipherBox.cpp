@@ -25,3 +25,32 @@ char toLower(char c)
     return c-'A'+'a';
 return c;
 }
+class Cipher{
+protected:
+string message;
+
+public:
+void setmessage(string msg){
+  message = msg;
+}
+string getmessage(){
+  return message;
+}
+string encrypt(){
+return " ";
+}
+string decrypt(){
+  return " ";
+}
+};
+
+class  CaesarCipher : public Cipher{
+int shift;
+public:
+CaesarCiphar(int s = 3){
+shift = s;
+}
+string encrypt(){
+  Helper u;
+  string r = "" "";
+
