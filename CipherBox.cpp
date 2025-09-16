@@ -223,7 +223,7 @@ string getKeyInfo(){
 };
 
 //Arpit
-class SubstitutionCipher : public Cipher
+class SubstitutionCipher: public Cipher
 {
     string key;
     Helper helper;
@@ -337,4 +337,10 @@ int choice = helper.getInput("Enter choice:");
 
 Cipher *cipher = nullptr;
 switch (choice) {
+    case 1:
+{
+int shift = helper.getInput("Enter shift for Caesar Cipher (1-25, 0 for prompt): ", 0, 25);
+cipher = new CaesarCipher(shift);
+break;
+}
 
