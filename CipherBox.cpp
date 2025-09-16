@@ -325,3 +325,16 @@ s += key;
 return "Key=" + s;
 }
 };
+int main()
+{
+  Helper helper;
+cout << "Cipher Program\n";
+string msg;
+cout << " Enter the message:";
+getline(cin,msg);
+cout << "\n Choose a cipher:\n" << "1. Caesar Cipher\n" << "2.XOR Cipher\n" << "3.Substitution Cipher\n";
+int choice = helper.getInput("Enter choice:");
+
+Cipher *cipher = nullptr;
+switch (choice) {
+
