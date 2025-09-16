@@ -222,7 +222,6 @@ string getKeyInfo(){
 }
 };
 
-//Arpit
 class SubstitutionCipher: public Cipher
 {
     string key;
