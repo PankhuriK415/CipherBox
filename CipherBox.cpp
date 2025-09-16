@@ -281,3 +281,47 @@ public:
         return "Key=" + key;
     }
 };
+class XORCipher : public Cipher {
+char key;
+Helper helper;
+public:
+XORCipher(char k=0) : key(k) {
+if (k==0)
+{
+try{
+cout << "Enter a single character key XOR Cipher:";
+if (!(cin>>key)) {
+throw string("Invalid character input for XOR key");
+}
+cin.ignore();
+}
+  catch (const string &e) {
+cout<< "Error:" << e <<".Using default key 'K' \n");
+key='K';
+  }
+}
+}
+string encrypt () {
+  string tmp = "";
+for (unsigned char c : message) {
+  tmp.push_back((char)(c^key));
+}
+return helper.hexEncode(tmp);
+}
+string decrypt () {
+  string decoded = helper.hexDecode(message);
+if (decoded.empty() && !message.empty()) {
+  return "[XOR:Invalid hex data]";
+    }
+string out ="";
+for (unsigned char c : decoded)
+  out.push_back((char)(c^key));
+return out;
+}
+string getKeyInfo()
+{
+  string s= "";
+s += key;
+return "Key=" + s;
+}
+};
