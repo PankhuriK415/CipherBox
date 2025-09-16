@@ -140,62 +140,68 @@ string getKeyInfo(){
 }
 };
 
-//Arpit
 class SubstitutionCipher : public Cipher
 {
-    string key;
-    Helper helper;
+  string key;
+  Helper helper;
 
 public:
-    SubstitutionCipher(string k = "") : key(k)
+  SubstitutionCipher(string k = ""):
+key(k)
+{
+  if(k.empty())
+    key = "QWERTYUIOPASDFGHJKLZXCVBNM"
+}
+string encrypt()
+{
+  string r = "";
+  for(char  c : message)
     {
-        if (k.empty())
-            key = "QWERTYUIOPASDFGHJKLZXCVBNM";
-    }
-    string encrypt()
-    {
-        string r = "";
-        for (char c : message)
-        {
-            if (helper.isUpper(c))
+      if (helper.isUpper(c))
                 r += key[c - 'A'];
-            else if (helper.isAlpha(c))
+      else if (helper.isAlpha(c))
                 r += helper.toLower(key[c - 'a']);
-            else
+       else
                 r += c;
-        }
-        return r;
+
     }
-    string decrypt()
+    return r;
+}
+string decrypt()
+{
+  string r = "";
+  for (char c : message)
     {
-        string r = "";
-        for (char c : message)
-        {
-            if (helper.isUpper(c))
-            {
-                for (int j = 0; j < 26; j++)
+      if(helper.isUpper(c))
+      {
+         for (int j = 0; j < 26; j++)
                     if (key[j] == c)
                     {
                         r += 'A' + j;
                         break;
                     }
-            }
-            else if (helper.isAlpha(c))
-            {
-                for (int j = 0; j < 26; j++)
-                    if (helper.toLower(key[j]) == c)
-                    {
-                        r += 'a' + j;
-                        break;
-                    }
-            }
-            else
-                r += c;
-        }
-        return r;
+
+      }
+   else if (helper.isAlpha(c))
+   {
+     for(int j = 0; j < 26;j++)
+       {
+          if(helper.toLower(key[j]) == c)
+         {
+         r+= 'a' + j;
+         break;
+         }
+       }
+      
+   }
+      else
+      r+= c;
     }
-    string getKeyInfo()
-    {
-        return "Key=" + key;
-    }
+  return r;
+}
+string getKeyInfo()
+{
+  return "Key= " + key;
+}
 };
+
