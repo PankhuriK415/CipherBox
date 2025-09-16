@@ -1,16 +1,18 @@
 #include <iostream>
 #include <string>
-#include <limits>
+#include <fstream>
 
 using namespace std;
 
 class Helper
 { 
 public:
-bool isAlpha(char c) {
+bool isAlpha(char c) 
+{
   return (c>='A' && c<='Z') || (c>='a' && c<='z');
 }
-bool isUpper(char c) {
+bool isUpper(char c) 
+{
   return (c>='A' && c<='Z');
 }
 char toUpper (char c)
@@ -25,30 +27,6 @@ char toLower(char c)
     return c-'A'+'a';
 return c;
 }
-string cleanText(string yext,bool toUpperFlag = true)
-{
-  string result = "";
-  for(int i = 0; i < text.length(); i++)
-    {
-      char c = text[i];
-      if(isAlpha(c))
-          result += toUpperFlag ?
-    toUpper(c) : c;
-    }
-  return result;
-}
-
-bool isCoprimeWith26(int a)
-{
-  int x = a,y =26;
-  while( y != 0)
-    {
-      int temp = x % y;
-      x = y;
-      y = temp;
-    }
-  return (x==1);
-}
 void reverseString (string &s)
 {
   int n = s.length();
@@ -59,25 +37,129 @@ s[i] = s[n-i-1];
 s[n-i-1] =temp;
 }
 }
-int getInput(string prompt, int minval. int maxval)
+int getInput(string prompt, int minval, int maxval)
 {
   int choice;
-while (true)
+  while (true)
+    {
+      try
+        {
+          if (!prompt.empty())
+          {
+            cout << prompt;
+          }
+          if (cin >> choice && choice >= minVal && choice <= maxVal)
+          {
+            cin.ignore();
+            return choice;
+          }
+          else
+          {
+            throw string("Invalid Input! Enter a number between " + to_string(minVal) +"and" + to_string(maxVal) + "\n");
+          }
+        }
+        catch (const string &e)
+        {
+          cout << e;
+          cin.clear();
+          string bad;
+          getline(cin, bad);
+        }
+    }
+}
+
+int stringToInt(cont string &s)
 {
-cout << prompt;
-if (cin >> choice && choice >= minval && choice <= maxval)
+  try
+    {
+      if (s.empty())
+      {
+        throw string("Empty string");
+      }
+      int result = 0;
+      int idx = 0;
+      bool neg = false;
+      if (s[0] == '-')
+      {
+        neg = true;
+        idx = 1;
+      }
+      for (; idx < (int)s.length(); idx++)
+        {
+          char c = s[idx];
+          if (c >= '0' && c <= '9')
+          {
+            result = result * 10 + (c - '0');
+          }
+          else
+          {
+            throw string("Invalid character in number");
+          }
+          return neg ? -result : result;            
+        }
+    }
+      catch (const string &e)
+        {
+        return -1;
+        }
+}
+
+string hexEncode (const string &in)
 {
-return choice;
+  const char hexDigits[] = "0123456789ABCDEF";
+  string out;
+  for (unsigned char c : in)
+    {
+      unsigned char hi = (c >> 4) & 0xF;
+      out.push_back(hexDigits[hi]);
+      out.push_back(hexDigits[lo]);
+    }
+  return out;
 }
-else
+
+string hexDecode(const string &in)
 {
-cin.clear();
-string badInput;
-cin >> badInput;
-cout << "Invalid Input!! Enter a number between " << minval << "and" << maxval << "\n";
+  int n = in.length();
+  if (n % 2 != 0)
+  {
+    return "";
+  }
+  string out;
+  out.reserve(n / 2);
+  for (int i = 0; i < n; i += 2)
+    {
+      char a = in[i];
+      char b = in[i+1];
+      int hi = hexCharToInt(a);
+      int lo = hexCharToInt(b);
+      if (hi == -1 || lo == -1)
+      {
+        return "";
+      }
+      char val = (char)((hi << 4) | lo);
+      out.push_back(val);
+    }
 }
+private:
+int hexCharToInt(char c)
+{
+  if (c >= '0' && c<= '9')
+  {
+    return c- '0';
+  }
+  if (c >= 'A' && c <= 'F')
+  {
+    return 10 + (c - 'A');
+  }
+  if (c >= 'a' && c <= 'f')
+  {
+    return 10 + (c - 'a');
+  }
+  return -1;
 }
-}
+friend class XORCipher;
+};
+
 class Cipher{
 protected:
 string message;
@@ -140,7 +222,7 @@ string getKeyInfo(){
 }
 };
 
-class SubstitutionCipher : public Cipher
+class SubstitutionCipher: public Cipher
 {
   string key;
   Helper helper;
@@ -204,4 +286,68 @@ string getKeyInfo()
   return "Key= " + key;
 }
 };
+
+class XORCipher : public Cipher {
+char key;
+Helper helper;
+public:
+XORCipher(char k=0) : key(k) {
+if (k==0)
+{
+try{
+cout << "Enter a single character key XOR Cipher:";
+if (!(cin>>key)) {
+throw string("Invalid character input for XOR key");
+}
+cin.ignore();
+}
+  catch (const string &e) {
+cout<< "Error:" << e <<".Using default key 'K' \n");
+key='K';
+  }
+}
+}
+string encrypt () {
+  string tmp = "";
+for (unsigned char c : message) {
+  tmp.push_back((char)(c^key));
+}
+return helper.hexEncode(tmp);
+}
+string decrypt () {
+  string decoded = helper.hexDecode(message);
+if (decoded.empty() && !message.empty()) {
+  return "[XOR:Invalid hex data]";
+    }
+string out ="";
+for (unsigned char c : decoded)
+  out.push_back((char)(c^key));
+return out;
+}
+string getKeyInfo()
+{
+  string s= "";
+s += key;
+return "Key=" + s;
+}
+};
+int main()
+{
+  Helper helper;
+cout << "Cipher Program\n";
+string msg;
+cout << " Enter the message:";
+getline(cin,msg);
+cout << "\n Choose a cipher:\n" << "1. Caesar Cipher\n" << "2.XOR Cipher\n" << "3.Substitution Cipher\n";
+int choice = helper.getInput("Enter choice:");
+
+Cipher *cipher = nullptr;
+switch (choice) {
+    case 1:
+{
+int shift = helper.getInput("Enter shift for Caesar Cipher (1-25, 0 for prompt): ", 0, 25);
+cipher = new CaesarCipher(shift);
+break;
+}
+
 
