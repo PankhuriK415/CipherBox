@@ -86,26 +86,38 @@ public:
 void setmessage(string msg){
   message = msg;
 }
+
 string getmessage(){
   return message;
 }
 virtual string encrypt() = 0;
 virtual string decrypt() = 0;
+virtual string getKeyInfo(){
+  return " ";
+}
+virtual ~Cipher(){}
 };
 
 class  CaesarCipher: public Cipher{
 int shift;
+Helper helper;
 public:
-CaesarCipher(int s = 3){
-shift = s;
+CaesarCipher(int s = 0) : shift(s){
+  if(s == 0){
+    try{
+      shift = helper.getInput("Enter shift value for Caesar Cipher (1-25) :", 1, 25);
+    }
+    catch (const string &e){
+      cout << "Error setting shift: " << e << "\n";
+      shift = 1;
+    }
+  }
 }
 string encrypt(){
-  Helper u;
   string r = "" "";
-for(int i = 0; i < message.length(); i++){
-char c = message{i};
-if(u.isAlpha(c)){
-char b = u.isUpper(c)? 'A': 'a';
+for(char c : message){
+if(helper.isAlpha(c)){
+char b = helper.isUpper(c)? 'A': 'a';
 r += char(((c-b+shift)%26)+b);
 }
 else r += c;
@@ -113,16 +125,17 @@ else r += c;
 return r;
 }
 string decrypt(){
-  Helper u;
 string r = "" "";
-for(int i = 0; i < message.length(); i++){
-char c = message{i};
-if(u.isAlpha(c)){
-char b = u.isUpper(c)?'A': 'a';
+for(char c : message){
+if(helper.isAlpha(c)){
+char b = helper.isUpper(c)?'A': 'a';
 r += char(((c - b - shift + 26) % 26) + b);
 }
 else r +=c;
 }
 return r;
+}
+string getKeyInfo(){
+  return "Shift=" + to -string(shift);
 }
 };
