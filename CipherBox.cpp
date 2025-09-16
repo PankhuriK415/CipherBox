@@ -325,7 +325,19 @@ s += key;
 return "Key=" + s;
 }
 };
-case 1:
+int main()
+{
+  Helper helper;
+cout << "Cipher Program\n";
+string msg;
+cout << " Enter the message:";
+getline(cin,msg);
+cout << "\n Choose a cipher:\n" << "1. Caesar Cipher\n" << "2.XOR Cipher\n" << "3.Substitution Cipher\n";
+int choice = helper.getInput("Enter choice:");
+
+Cipher *cipher = nullptr;
+switch (choice) {
+    case 1:
 {
 int shift = helper.getInput("Enter shift for Caesar Cipher (1-25, 0 for prompt): ", 0, 25);
 cipher = new CaesarCipher(shift);
