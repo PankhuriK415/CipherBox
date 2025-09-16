@@ -89,12 +89,8 @@ void setmessage(string msg){
 string getmessage(){
   return message;
 }
-string encrypt(){
-return " ";
-}
-string decrypt(){
-  return " ";
-}
+virtual string encrypt() = 0;
+virtual string decrypt() = 0;
 };
 
 class  CaesarCipher: public Cipher{
