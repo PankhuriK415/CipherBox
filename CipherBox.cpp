@@ -84,7 +84,7 @@ int stringToInt(const string &s)
         neg = true;
         idx = 1;
       }
-      for (; idx < (int)s.length(); idx++)
+      for (idx = 1; idx < (int)s.length(); idx++)
         {
           char c = s[idx];
           if (c >= '0' && c <= '9')
