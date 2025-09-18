@@ -302,7 +302,7 @@ throw string("Invalid character input for XOR key");
 cin.ignore();
 }
   catch (const string &e) {
-cout<< "Error:" << e <<".Using default key 'K' \n");
+cout<< "Error:" << e <<".Using default key 'K' \n";
 key='K';
   }
 }
