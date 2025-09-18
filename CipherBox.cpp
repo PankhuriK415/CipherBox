@@ -293,7 +293,8 @@ class XORCipher : public Cipher {
 char key;
 Helper helper;
 public:
-XORCipher(char k=0) : key(k) {
+XORCipher(char k=0){
+  key = k;
 if (k==0)
 {
 try{
