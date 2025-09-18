@@ -363,6 +363,14 @@ cin.ignore();
 cipher = new XORCipher(key);
 break;
 }
+  case 3:
+    {
+      string key;
+      cout <<"Enter 26-letter key for Substitution Cipher (leave empty for default): ";
+      getline(cin,key);
+      cipher = new SubstitutionCipher(key);
+      break;
+    }
     }
 cipher -> setMessage(msg);
 
