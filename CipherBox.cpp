@@ -280,6 +280,7 @@ public:
         return "Key=" + key;
     }
 };
+
 class XORCipher : public Cipher {
 char key;
 Helper helper;
@@ -342,4 +343,24 @@ int shift = helper.getInput("Enter shift for Caesar Cipher (1-25, 0 for prompt):
 cipher = new CaesarCipher(shift);
 break;
 }
+    case 2:
+{
+char key;
+cout << "Enter single character key for XOR Cipher";
+if (!(cin>>key)) {
+key=0;
+cin.clear();
+}
+cin.ignore();
+cipher = new XORCipher(key);
+break;
+}
+    }
+cipher -> setMessage(msg);
 
+string encrypted = cipher -> encrypt();
+string decrypted = cipher -> decrypt();
+cout << "\nOriginal Message:" << msg <<"\n" << Encrypted Message:" << encrypted << "\n" << "Decrypted Message:" << decrypted << "\n" << "Cipher Key Info:" << cipher -> getKeyInfo() << "\n";
+delete cipher;
+return 0;
+}
