@@ -37,7 +37,7 @@ s[i] = s[n-i-1];
 s[n-i-1] =temp;
 }
 }
-int getInput(string prompt, int minval, int maxval)
+int getInput(string prompt, int minVal, int maxVal)
 {
   int choice;
   while (true)
@@ -68,7 +68,7 @@ int getInput(string prompt, int minval, int maxval)
     }
 }
 
-int stringToInt(cont string &s)
+int stringToInt(const string &s)
 {
   try
     {
@@ -111,6 +111,7 @@ string hexEncode (const string &in)
   for (unsigned char c : in)
     {
       unsigned char hi = (c >> 4) & 0xF;
+      unsigned char lo = c & 0xF;
       out.push_back(hexDigits[hi]);
       out.push_back(hexDigits[lo]);
     }
@@ -165,7 +166,7 @@ protected:
 string message;
 
 public:
-void setmessage(string msg){
+void setMessage(string msg){
   message = msg;
 }
 
@@ -218,7 +219,7 @@ else r +=c;
 return r;
 }
 string getKeyInfo(){
-  return "Shift=" + to -string(shift);
+  return "Shift=" + to_string(shift);
 }
 };
 
@@ -232,7 +233,7 @@ public:
 key(k)
 {
   if(k.empty())
-    key = "QWERTYUIOPASDFGHJKLZXCVBNM"
+    key = "QWERTYUIOPASDFGHJKLZXCVBNM";
 }
 string encrypt()
 {
@@ -339,7 +340,7 @@ string msg;
 cout << " Enter the message:";
 getline(cin,msg);
 cout << "\n Choose a cipher:\n" << "1. Caesar Cipher\n" << "2.XOR Cipher\n" << "3.Substitution Cipher\n";
-int choice = helper.getInput("Enter choice:");
+int choice = helper.getInput("Enter choice:", 1, 3);
 
 Cipher *cipher = nullptr;
 switch (choice) {
@@ -366,7 +367,7 @@ cipher -> setMessage(msg);
 
 string encrypted = cipher -> encrypt();
 string decrypted = cipher -> decrypt();
-cout << "\nOriginal Message:" << msg <<"\n" << Encrypted Message:" << encrypted << "\n" << "Decrypted Message:" << decrypted << "\n" << "Cipher Key Info:" << cipher -> getKeyInfo() << "\n";
+cout << "\nOriginal Message:" << msg <<"\n" << "Encrypted Message:" << encrypted << "\n" << "Decrypted Message:" << decrypted << "\n" << "Cipher Key Info:" << cipher -> getKeyInfo() << "\n";
 delete cipher;
 return 0;
 }
