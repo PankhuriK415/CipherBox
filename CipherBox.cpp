@@ -140,6 +140,7 @@ string hexDecode(const string &in)
       char val = (char)((hi << 4) | lo);
       out.push_back(val);
     }
+  return out;
 }
 private:
 int hexCharToInt(char c)
