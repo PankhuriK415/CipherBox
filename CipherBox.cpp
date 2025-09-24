@@ -381,4 +381,16 @@ cout << "\nOriginal Message:" << msg <<"\n" << "Encrypted Message:" << encrypted
 delete cipher;
 return 0;
 }
+class ReserveCipher : public Cipher {
+Helper helper;
+public:
+string encrypt() {
+  string r = message;
+helper.reverseString(r);
+return r;
+}
+string decrypt() {
+  return encrypt();
+}
+};
 
