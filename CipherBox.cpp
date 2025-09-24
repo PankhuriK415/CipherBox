@@ -427,3 +427,28 @@ string decrypt() {
 }
 };
 
+class ROT13Cipher : public Cipher
+{
+Helper helper;
+public: 
+string encrypt()
+{
+  string r = "";
+  for (char c: message)
+{
+if (helper.isAlpha(c))
+{
+char b = helper.isUpper(c) ? 'A' : 'a';
+r += ((c-b + 13) % 26 +b);
+}
+  else 
+{
+  r += c;
+}  
+return r;
+}
+string decrypt () 
+{
+  return encrypt();
+}
+};
