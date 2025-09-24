@@ -426,4 +426,24 @@ string decrypt() {
   return encrypt();
 }
 };
-
+class AtbashCipher: public Cipher{
+Helper helper;
+public:
+string encrypt(){
+  string r = """";
+for(char c : message){
+  if(helper.isUpper(c)){
+    r += 'Z' - (c - 'A');
+  }
+  else if(helper.isAlpha(c)){
+    r += 'z' - (c - 'a');
+  }
+  else{
+    r += c;
+  }
+return r;
+}
+string decrypt(){
+  return encrypt();
+}
+};
