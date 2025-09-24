@@ -335,7 +335,65 @@ return "Key=" + s;
 }
 };
 
-//Rail Fence Cipher
+class ReserveCipher : public Cipher {
+Helper helper;
+public:
+string encrypt() {
+  string r = message;
+helper.reverseString(r);
+return r;
+}
+string decrypt() {
+  return encrypt();
+}
+};
+
+class AtbashCipher: public Cipher{
+Helper helper;
+public:
+string encrypt(){
+  string r = """";
+for(char c : message){
+  if(helper.isUpper(c)){
+    r += 'Z' - (c - 'A');
+  }
+  else if(helper.isAlpha(c)){
+    r += 'z' - (c - 'a');
+  }
+  else{
+    r += c;
+  }
+return r;
+}
+string decrypt(){
+  
+
+class ROT13Cipher : public Cipher
+{
+Helper helper;
+public: 
+string encrypt()
+{
+  string r = "";
+  for (char c: message)
+{
+if (helper.isAlpha(c))
+{
+char b = helper.isUpper(c) ? 'A' : 'a';
+r += ((c-b + 13) % 26 +b);
+}
+  else 
+{
+  r += c;
+}  
+return r;
+}
+string decrypt () 
+{
+    return encrypt();
+}
+};
+  
 class RailFenceCipher : public Cipher
 {
   int rails;
@@ -367,6 +425,7 @@ string decrypt()
   
 }
 };
+
 int main()
 {
   Helper helper;
@@ -414,36 +473,3 @@ cout << "\nOriginal Message:" << msg <<"\n" << "Encrypted Message:" << encrypted
 delete cipher;
 return 0;
 }
-class ReserveCipher : public Cipher {
-Helper helper;
-public:
-string encrypt() {
-  string r = message;
-helper.reverseString(r);
-return r;
-}
-string decrypt() {
-  return encrypt();
-}
-};
-class AtbashCipher: public Cipher{
-Helper helper;
-public:
-string encrypt(){
-  string r = """";
-for(char c : message){
-  if(helper.isUpper(c)){
-    r += 'Z' - (c - 'A');
-  }
-  else if(helper.isAlpha(c)){
-    r += 'z' - (c - 'a');
-  }
-  else{
-    r += c;
-  }
-return r;
-}
-string decrypt(){
-  return encrypt();
-}
-};
