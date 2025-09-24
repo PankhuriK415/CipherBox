@@ -334,6 +334,39 @@ s += key;
 return "Key=" + s;
 }
 };
+
+//Rail Fence Cipher
+class RailFenceCipher : public Cipher
+{
+  int rails;
+  Helper helper;
+
+public:
+  RailFenceCipher(int r = 0) : rails(r)
+{
+  if(r == 0)
+  {
+    try{
+      rails = helper.getInput("Enter number of rails of Rail Fence Cipher(2-10) : ",2,10);
+    }
+      catch(const string &e)
+      {
+        cout << "Error setting rails :" << e << ". Using default 2\n";
+        rails = 2;
+      }
+  }
+}
+
+string encrypt()
+{
+  
+}
+
+string decrypt()
+{
+  
+}
+};
 int main()
 {
   Helper helper;
