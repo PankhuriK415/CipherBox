@@ -346,6 +346,10 @@ return r;
 string decrypt() {
   return encrypt();
 }
+string operator~() {
+    string r = message;
+    helper.reverseString(r);
+    return r;
 };
 
 class AtbashCipher: public Cipher{
@@ -469,8 +473,14 @@ break;
     }
   case 4:
     {
-  cipher = new ReverseCipher();
-  break;
+   cipher = new ReverseCipher();
+    cipher->setMessage(msg);
+
+    ReverseCipher *rev = dynamic_cast<ReverseCipher*>(cipher);
+    if (rev) {
+        cout << "Reversed using operator~ : " << ~(*rev) << "\n";
+    }
+    break;
     }
   case 5:
     { cipher = new AtbashCipher();
