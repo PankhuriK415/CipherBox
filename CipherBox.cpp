@@ -352,7 +352,7 @@ class AtbashCipher: public Cipher{
 Helper helper;
 public:
 string encrypt(){
-  string r = """";
+  string r = "";
 for(char c : message){
   if(helper.isUpper(c)){
     r += 'Z' - (c - 'A');
