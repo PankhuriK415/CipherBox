@@ -198,7 +198,7 @@ CaesarCipher(int s = 0) : shift(s){
   }
 }
 string encrypt(){
-  string r = "" "";
+  string r = " ";
 for(char c : message){
 if(helper.isAlpha(c)){
 char b = helper.isUpper(c)? 'A': 'a';
@@ -335,7 +335,7 @@ return "Key=" + s;
 }
 };
 
-class ReserveCipher : public Cipher {
+class ReverseCipher : public Cipher {
 Helper helper;
 public:
 string encrypt() {
@@ -363,6 +363,7 @@ for(char c : message){
   else{
     r += c;
   }
+}
 return r;
 }
 string decrypt(){
@@ -386,7 +387,8 @@ r += ((c-b + 13) % 26 +b);
   else 
 {
   r += c;
-}  
+} 
+}
 return r;
 }
 string decrypt () 
