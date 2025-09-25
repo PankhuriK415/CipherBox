@@ -474,13 +474,7 @@ break;
   case 4:
     {
    cipher = new ReverseCipher();
-    cipher->setMessage(msg);
-
-    ReverseCipher *rev = dynamic_cast<ReverseCipher*>(cipher);
-    if (rev) {
-        cout << "Reversed using operator~ : " << ~(*rev) << "\n";
-    }
-    break;
+      break;
     }
   case 5:
     { cipher = new AtbashCipher();
