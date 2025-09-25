@@ -434,7 +434,7 @@ cout << "Cipher Program\n";
 string msg;
 cout << " Enter the message:";
 getline(cin,msg);
-cout << "\n Choose a cipher:\n" << "1. Caesar Cipher\n" << "2.XOR Cipher\n" << "3.Substitution Cipher\n";
+cout << "\n Choose a cipher:\n" << "1. Caesar Cipher\n" << "2.XOR Cipher\n" << "3.Substitution Cipher\n" << "4. Reverse Cipher\n" << "5. Atbash Cipher\n" << "6.ROT13 Cipher\n";
 int choice = helper.getInput("Enter choice:", 1, 3);
 
 Cipher *cipher = nullptr;
@@ -464,6 +464,19 @@ break;
       getline(cin,key);
       cipher = new SubstitutionCipher(key);
       break;
+    }
+  case 4:
+    {
+  cipher = new ReverseCipher();
+  break;
+    }
+  case 5:
+    { cipher = new AtbashCipher();
+     break;
+    }
+  case 6: 
+    { cipher = new ROT13Cipher();
+     break;
     }
     }
 cipher -> setMessage(msg);
