@@ -366,8 +366,9 @@ for(char c : message){
 return r;
 }
 string decrypt(){
-  
-
+  return encrypt();
+}
+};
 class ROT13Cipher : public Cipher
 {
 Helper helper;
