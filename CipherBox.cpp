@@ -7,36 +7,49 @@ using namespace std;
 class Helper
 { 
 public:
-bool isAlpha(char c) 
+inline bool isAlpha(char c) 
 {
   return (c>='A' && c<='Z') || (c>='a' && c<='z');
 }
-bool isUpper(char c) 
+inline bool isUpper(char c) 
 {
   return (c>='A' && c<='Z');
 }
-char toUpper (char c)
+inline char toUpper (char c)
 {
-  if (c>='a' && c<='z')
-    return c-'a'+'A';
-return c;
+  return (c >= 'a' && c <= 'z') ? c - 'a' + 'A' : c;
 }
-char toLower(char c)
+inline char toLower(char c)
 {
-  if (c>='A' && c<='Z')
-    return c-'A'+'a';
-return c;
+  return (c >= 'A' && c <= 'Z') ? c - 'A' + 'a' : c;
 }
-void reverseString (string &s)
-{
-  int n = s.length();
-for (int i = 0; i < n/2; i++)
-{
-char temp = s[i];
-s[i] = s[n-i-1];
-s[n-i-1] =temp;
-}
-}
+void reverseString(string &s)
+    {
+        int n = s.length();
+        for (int i = 0; i < n / 2; i++)
+        {
+            char temp = s[i];
+            s[i] = s[n - i - 1];
+            s[n - i - 1] = temp;
+        }
+    }
+void reverseString(string &s, int start, int end)
+    {
+        if (start < 0)
+            start = 0;
+        if (end > (int)s.size())
+            end = s.size();
+
+        while (start < end)
+        {
+            char temp = s[start];
+            s[start] = s[end - 1];
+            s[end - 1] = temp;
+            start++;
+            end--;
+        }
+    }
+
 int getInput(string prompt, int minVal, int maxVal)
 {
   int choice;
@@ -67,7 +80,38 @@ int getInput(string prompt, int minVal, int maxVal)
         }
     }
 }
-
+int getInput (string prompt)
+{
+        int value;
+        cout << prompt;
+        while (!(cin >> value))
+        {
+            cout << "Invalid input! Enter a number again: ";
+            cin.clear();
+            cin.ignore(100, '\n');
+        }
+        cin.ignore();
+        return value;
+    }
+float getInput(string prompt, float minVal, float maxVal)
+    {
+        float choice;
+        while (true)
+        {
+            cout << prompt;
+            if (cin >> choice && choice >= minVal && choice <= maxVal)
+            {
+                cin.ignore();
+                return choice;
+            }
+            else
+            {
+                cout << "Invalid input! Enter a value between " << minVal << " and " << maxVal << ".\n";
+                cin.clear();
+                cin.ignore(100, '\n');
+            }
+        }
+    }
 int stringToInt(const string &s)
 {
   try
@@ -368,7 +412,6 @@ for(char c : message){
   else{
     r += c;
   }
-}
 return r;
 }
 string decrypt(){
