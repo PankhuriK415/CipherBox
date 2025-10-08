@@ -338,18 +338,19 @@ return "Key=" + s;
 class ReverseCipher : public Cipher {
 Helper helper;
 public:
-string encrypt() {
+inline string encrypt() {
   string r = message;
 helper.reverseString(r);
 return r;
 }
-string decrypt() {
+inline string decrypt() {
   return encrypt();
 }
 string operator~() {
     string r = message;
     helper.reverseString(r);
     return r;
+}
 };
 
 class AtbashCipher: public Cipher{
@@ -433,9 +434,8 @@ string decrypt()
 }
 };
 
-int main()
-{
-  Helper helper;
+int main() {
+Helper helper;
 cout << "Cipher Program\n";
 string msg;
 cout << " Enter the message:";
