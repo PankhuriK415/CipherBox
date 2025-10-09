@@ -477,6 +477,71 @@ string decrypt()
 }
 };
 
+class VigenereCipher : public Cipher {
+string key;
+Helper helper;
+
+public:
+VigenereCipher(string k = "") : key(k) 
+{
+if (k.empty())
+{
+try
+{
+cout << "Enter key for Vigenere Cipher:";
+getline(cin, key);
+if (key.empty())
+  throw string ("Empty key not allowed");
+}
+  catch (const string &e)
+{
+cout << "Error:" << e << ". Using default key 'KEY'\n";
+key = "KEY";
+}
+}
+}
+string encrypt()
+{
+string r = "";
+int j = 0;
+for (char c : message)
+{
+if (helper.isAlpha(c))
+{
+char b = helper.isUpper(c) ? 'A' : 'a';
+char k = helper.toUpper(key[j % key.length()]) - 'A';
+r += ((c - b + k) % 26 + b);
+j++;
+}
+else
+r += c;
+}
+return r;
+}
+string decrypt()
+{
+string r = "";
+int j = 0;
+for (char c : message)
+{
+if (helper.isAlpha(c))
+{
+char b = helper.isUpper(c) ? 'A' : 'a';
+char k = helper.toUpper(key[j % key.length()]) - 'A';
+r += ((c - b - k + 26) % 26 + b);
+j++;
+}
+else
+r += c;
+}
+return r;
+}
+string getkeyinfo()
+{
+return "KEY=" + key;
+}
+};
+  
 int main() {
 Helper helper;
 cout << "Cipher Program\n";
