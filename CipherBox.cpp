@@ -541,7 +541,104 @@ string getkeyinfo()
 return "KEY=" + key;
 }
 };
-  
+
+class AffineCipher : public Cipher
+{
+int a, b;
+Helper helper;
+public
+AffineCipher(int x = 0, int y = 0): a(x), b(y)
+{
+if (x==0)
+{
+try 
+{
+cout << "Enter key 'a' (coprime with 26) for Affine Cipher: ";
+if (!(cin >> a))
+{
+throw string("Invalid input for 'a'");
+}
+int x=a, y2=26;
+while (y2 != 0)
+{
+int t=x%y2;
+x=y2;
+y2=t;
+}
+if (x!=1)
+{
+throw string("Key 'a' must be coprime with 26");
+}
+cout << "Enter key 'b'(0-25) for Affine Cipher:";
+if(!(cin >> b) || b<0 || b> 25)
+{
+throw string("Invalid 'b'. Must be between 0 and 25");
+}
+cin.ignore();
+}
+catch (const string &e)
+{
+cout << "Error: " << e << ". Using default a=5, b=8\n";
+a = 5;
+b = 8;
+}
+}
+}
+int modInverse(int x)
+{
+for (int i = 1; i < 26; i++)
+if ((x * i) % 26 == 1)
+{
+return i;
+}
+return -1;
+}
+string encrypt()
+{
+string r = "";
+for (char c : message)
+{
+if (helper.isAlpha(c))
+{
+char base = helper.isUpper(c) ? 'A' : 'a';
+r += ((a * (c - base) + b) % 26 + base);
+}
+else
+{
+r += c;
+}
+}
+return r;
+}
+string decrypt()
+{
+string r = "";
+int inv = modInverse(a);
+if (inv == -1)
+{
+return "[Affine: no modular inverse for a=" + to_string(a) + "]";
+}
+for (char c : message)
+{
+if (helper.isAlpha(c))
+{
+char base = helper.isUpper(c) ? 'A' : 'a';
+r += ((inv * ((c - base - b + 26) % 26)) % 26 + base);
+}
+else
+{
+r += c;
+}
+}
+return r;
+}
+string getKeyInfo()
+{
+return "a=" + to_string(a) + ", b=" + to_string(b);
+}
+};
+
+
 int main() {
 Helper helper;
 cout << "Cipher Program\n";
