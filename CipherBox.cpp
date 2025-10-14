@@ -139,7 +139,7 @@ int stringToInt(const string &s)
           {
             throw string("Invalid character in number");
           }
-          return neg ? -result : result;            
+          return neg? -result: result;            
         }
     }
       catch (const string &e)
@@ -152,7 +152,7 @@ string hexEncode (const string &in)
 {
   const char hexDigits[] = "0123456789ABCDEF";
   string out;
-  for (unsigned char c : in)
+  for (unsigned char c: in)
     {
       unsigned char hi = (c >> 4) & 0xF;
       unsigned char lo = c & 0xF;
@@ -298,7 +298,7 @@ string encrypt()
 string decrypt()
 {
   string r = "";
-  for (char c : message)
+  for (char c: message)
     {
       if(helper.isUpper(c))
       {
@@ -333,7 +333,7 @@ string getKeyInfo()
 }
 };
 
-class XORCipher : public Cipher {
+class XORCipher: public Cipher {
 char key;
 Helper helper;
 public:
@@ -367,7 +367,7 @@ if (decoded.empty() && !message.empty()) {
   return "[XOR:Invalid hex data]";
     }
 string out ="";
-for (unsigned char c : decoded)
+for (unsigned char c: decoded)
   out.push_back((char)(c^key));
 return out;
 }
@@ -379,7 +379,7 @@ return "Key=" + s;
 }
 };
 
-class ReverseCipher : public Cipher {
+class ReverseCipher: public Cipher {
 Helper helper;
 public:
 inline string encrypt() {
@@ -429,7 +429,7 @@ string encrypt()
 {
 if (helper.isAlpha(c))
 {
-char b = helper.isUpper(c) ? 'A' : 'a';
+char b = helper.isUpper(c) ? 'A': 'a';
 r += ((c-b + 13) % 26 +b);
 }
   else 
@@ -445,7 +445,7 @@ string decrypt ()
 }
 };
   
-class RailFenceCipher : public Cipher
+class RailFenceCipher: public Cipher
 {
   int rails;
   Helper helper;
@@ -564,7 +564,58 @@ string getKeyInfo()
 }
 };
 
-class VigenereCipher : public Cipher {
+class Base64Cipher : public Cipher{
+string base64_chars;
+
+public:
+Base64Cipher(){
+base64_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+}
+string encrypt(){
+string r = "";
+int val = 0, valb = -6;
+for(unsigned char c : message){
+val = (val << 8) + c;
+valb +=8;
+while(valb >= 0){
+r += base64_chars[(val >> valb) & 63];
+valb -= 6;
+}
+}
+if(valb > -6)
+  r += base64_chars[((val << 8) >> (valb + 8)) &63];
+while(r.length() % 4)
+  r += '=';
+return r;
+}
+string decrypt(){
+intT[256];
+  for (int i = 0; i<256; i++)
+    T[i] = -1;
+  for(int i = 0; i<64; i++)
+    T[(unsigned char)base64_chars[i]] = i;
+  string r = "";
+  int val = 0, valb = -8;
+  for(char c : message){
+    if(c == '=')
+      break;
+    if(T[(unsigned char)c] == -1)
+      continue;
+    val = (val << 6) + T[9unsigneed char)c];
+    valb +=6;
+    if(valb >= 0){
+      r += char((val >> valb) & 255);
+      valb -= 8;
+    }
+  }
+  return r;
+}
+string getKeyInfo(){
+  return "Base64";
+}
+};
+
+class VigenereCipher: public Cipher {
 string key;
 Helper helper;
 
@@ -591,11 +642,11 @@ string encrypt()
 {
 string r = "";
 int j = 0;
-for (char c : message)
+for (char c: message)
 {
 if (helper.isAlpha(c))
 {
-char b = helper.isUpper(c) ? 'A' : 'a';
+char b = helper.isUpper(c) ? 'A': 'a';
 char k = helper.toUpper(key[j % key.length()]) - 'A';
 r += ((c - b + k) % 26 + b);
 j++;
@@ -609,11 +660,11 @@ string decrypt()
 {
 string r = "";
 int j = 0;
-for (char c : message)
+for (char c: message)
 {
 if (helper.isAlpha(c))
 {
-char b = helper.isUpper(c) ? 'A' : 'a';
+char b = helper.isUpper(c) ? 'A': 'a';
 char k = helper.toUpper(key[j % key.length()]) - 'A';
 r += ((c - b - k + 26) % 26 + b);
 j++;
@@ -629,7 +680,7 @@ return "KEY=" + key;
 }
 };
 
-class AffineCipher : public Cipher
+class AffineCipher: public Cipher
 {
 int a, b;
 Helper helper;
@@ -683,11 +734,11 @@ return -1;
 string encrypt()
 {
 string r = "";
-for (char c : message)
+for (char c: message)
 {
 if (helper.isAlpha(c))
 {
-char base = helper.isUpper(c) ? 'A' : 'a';
+char base = helper.isUpper(c) ? 'A': 'a';
 r += ((a * (c - base) + b) % 26 + base);
 }
 else
@@ -705,11 +756,11 @@ if (inv == -1)
 {
 return "[Affine: no modular inverse for a=" + to_string(a) + "]";
 }
-for (char c : message)
+for (char c: message)
 {
 if (helper.isAlpha(c))
 {
-char base = helper.isUpper(c) ? 'A' : 'a';
+char base = helper.isUpper(c) ? 'A': 'a';
 r += ((inv * ((c - base - b + 26) % 26)) % 26 + base);
 }
 else
