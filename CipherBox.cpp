@@ -468,12 +468,99 @@ public:
 
 string encrypt()
 {
-  
+  if (rails <= 1)
+    return message;
+  int len = message.length();
+  char **mat = new char *[rails];
+
+  for(int i = 0; i < rails; i++)
+    {
+       mat[i] = new char[len];
+           for (int j = 0; j < len; j++)
+               mat[i][j] = 0; 
+    }
+  int row = 0,dir = 1;
+  for(int i = 0; i < len; i++)
+    {
+      mat[row][i] = message[i];
+            if (row == 0)
+                dir = 1;
+            else if (row == rails - 1)
+                dir = -1;
+            row += dir;
+    }
+  string r = " ";
+  for(int i = 0; i < rails;i++)
+    for(int j = 0;j < len;j++)
+      if(mat[i][j] != 0)
+        r += mat[i][j];
+
+  for(int i = 0; i < rails; i++)
+    delete[] mat[i];
+  delete[] mat;
+  return  r;
 }
 
 string decrypt()
 {
-  
+  if (rails <= 1)
+    return message;
+  int len = message.length();
+  char **mat = new char *[rails];
+  bool **mark = new bool *[rails];
+
+  for(int i = 0; i < rails; i++)
+    {
+      mat[i] new char[len];
+      mark[i] = new bool[len];
+      for(int j = 0;j < len;j++)
+        {
+          mat[i][j] = 0;
+          mark[i][j] = false;
+        }
+        
+    }
+  int rows = 0,dir = 1;
+  for(int i = 0; i < len; i++)
+    {
+       mark[row][i] = true;
+            if (row == 0)
+                dir = 1;
+            else if (row == rails - 1)
+                dir = -1;
+            row += dir;
+    }
+  int idx = 0;
+  for(int i = 0; i  < raild; i++)
+    for(int j = 0; j < len; j++)
+      if(mark[i][j] && idx < len)
+        mat[i][j] = message[idx++];
+  string r ="";
+  row = 0;
+  dir = 1;
+  for(int i = 0; i < len; i++)
+    {
+       r += mat[row][i];
+            if (row == 0)
+                dir = 1;
+            else if (row == rails - 1)
+                dir = -1;
+            row += dir;
+    }
+
+  for (int i = 0; i <rails; i++)
+    {
+      delete[] mat[i];
+      delete[] mark[i];
+    }
+  delete[] mat;
+        delete[] mark;
+        return r;
+}
+
+string getKeyInfo()
+{
+  return "Rails = "+ to_string(rails);
 }
 };
 
