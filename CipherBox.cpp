@@ -346,7 +346,7 @@ XORCipher(char k=0){
 if (k==0)
 {
 try{
-cout << "Enter a single character key XOR Cipher:";
+cout << "Enter a single alphabet key XOR Cipher:";
 if (!(cin>>key)) {
 throw string("Invalid character input for XOR key");
 }
