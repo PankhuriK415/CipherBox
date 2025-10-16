@@ -533,12 +533,12 @@ string decrypt()
   int rows = 0,dir = 1;
   for(int i = 0; i < len; i++)
     {
-       mark[row][i] = true;
-            if (row == 0)
+       mark[rows][i] = true;
+            if (rows == 0)
                 dir = 1;
-            else if (row == rails - 1)
+            else if (rows == rails - 1)
                 dir = -1;
-            row += dir;
+            rows += dir;
     }
   int idx = 0;
   for(int i = 0; i  < rails; i++)
@@ -546,16 +546,16 @@ string decrypt()
       if(mark[i][j] && idx < len)
         mat[i][j] = message[idx++];
   string r ="";
-  row = 0;
+  rows = 0;
   dir = 1;
   for(int i = 0; i < len; i++)
     {
-       r += mat[row][i];
-            if (row == 0)
+       r += mat[rows][i];
+            if (rows == 0)
                 dir = 1;
-            else if (row == rails - 1)
+            else if (rows == rails - 1)
                 dir = -1;
-            row += dir;
+            rows += dir;
     }
 
   for (int i = 0; i <rails; i++)
@@ -612,7 +612,7 @@ int T[256];
       break;
     if(T[(unsigned char)c] == -1)
       continue;
-    val = (val << 6) + T[(unsigneed char)c];
+    val = (val << 6) + T[(unsigned char)c];
     valb +=6;
     if(valb >= 0){
       r += char((val >> valb) & 255);
@@ -697,8 +697,7 @@ class AffineCipher: public Cipher
 {
 int a, b;
 Helper helper;
-public
-AffineCipher(int x = 0, int y = 0): a(x), b(y)
+public : AffineCipher(int x = 0, int y = 0): a(x), b(y)
 {
 if (x==0)
 {
