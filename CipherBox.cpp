@@ -777,62 +777,79 @@ return "a=" + to_string(a) + ", b=" + to_string(b);
 };
 
 
-int main() {
-Helper helper;
-cout << "Cipher Program\n";
-string msg;
-cout << " Enter the message:";
-getline(cin,msg);
-cout << "\n Choose a cipher:\n" << "1. Caesar Cipher\n" << "2.XOR Cipher\n" << "3.Substitution Cipher\n" << "4. Reverse Cipher\n" << "5. Atbash Cipher\n" << "6.ROT13 Cipher\n";
-int choice = helper.getInput("Enter choice:", 1, 3);
-
-Cipher *cipher = nullptr;
-switch (choice) {
-    case 1:
+int main()
 {
-int shift = helper.getInput("Enter shift for Caesar Cipher (1-25, 0 for prompt): ", 0, 25);
-cipher = new CaesarCipher(shift);
-break;
-}
-    case 2:
-{
-char key;
-cout << "Enter single character key for XOR Cipher";
-if (!(cin>>key)) {
-key=0;
-cin.clear();
-}
-cin.ignore();
-cipher = new XORCipher(key);
-break;
-}
-  case 3:
-    {
-      string key;
-      cout <<"Enter 26-letter key for Substitution Cipher (leave empty for default): ";
-      getline(cin,key);
-      cipher = new SubstitutionCipher(key);
-      break;
-    }
-  case 4:
-    {
-   cipher = new ReverseCipher();
-      break;
-    }
-  case 5:
-    { cipher = new AtbashCipher();
-     break;
-    }
-  case 6: 
-    { cipher = new ROT13Cipher();
-     break;
-    }
-    }
-cipher -> setMessage(msg);
+    Helper helper;
+    int choiceCipher;
+    string msg;
 
-string encrypted = cipher -> encrypt();
-string decrypted = cipher -> decrypt();
-cout << "\nOriginal Message:" << msg <<"\n" << "Encrypted Message:" << encrypted << "\n" << "Decrypted Message:" << decrypted << "\n" << "Cipher Key Info:" << cipher -> getKeyInfo() << "\n";
-delete cipher;
-return 0;
+    cout << "-----CipherBox-----\n";
+
+    cout << "Available Ciphers:\n";
+    cout << "1. Caesar Cipher\n2. Substitution Cipher\n3. XOR Cipher\n4. Reverse Cipher\n5. Atbash Cipher\n6. ROT13 Cipher\n7. Rail Fence Cipher\n8. Vigenere Cipher\n9. Affine Cipher\n10. Base64 Cipher\n";
+   
+    choiceCipher = helper.getInput("Select a cipher (1-10): ", 1, 10);
+
+    Cipher* cipher = nullptr;
+    switch (choiceCipher)
+    {
+        case 1: cipher = new CaesarCipher(); 
+          break;
+        case 2: cipher = new SubstitutionCipher(); 
+          break;
+        case 3: cipher = new XORCipher(); 
+          break;
+        case 4: cipher = new ReverseCipher(); 
+          break;
+        case 5: cipher = new AtbashCipher(); 
+          break;
+        case 6: cipher = new ROT13Cipher(); 
+          break;
+        case 7: cipher = new RailFenceCipher(); 
+          break;
+        case 8: cipher = new VigenereCipher(); 
+          break;
+        case 9: cipher = new AffineCipher(); 
+          break;
+        case 10: cipher = new Base64Cipher(); 
+          break;
+        default: cout << "Invalid choice!\n"; 
+          return 0;
+    }
+
+    int option;
+    do
+    {
+        cout << "\nChoose an option:\n1. Encrypt message\n2. Decrypt message\n3. Exit\n";
+        option = helper.getInput("Your choice: ", 1, 3);
+
+        switch (option)
+        {
+            case 1:
+                cout << "Enter message to encrypt: ";
+                getline(cin, msg);
+                cipher->setMessage(msg);
+                cout << "\nEncrypted Message: " << cipher->encrypt() << "\n";
+                cout << "Key Info: " << cipher->getKeyInfo() << "\n";
+                break;
+            case 2:
+                cout << "Enter message to decrypt: ";
+                getline(cin, msg);
+                cipher->setMessage(msg);
+                cout << "\nDecrypted Message: " << cipher->decrypt() << "\n";
+                cout << "Key Info: " << cipher->getKeyInfo() << "\n";
+                break;
+            case 3:
+                cout << "Exiting program...\n";
+                break;
+            default:
+                cout << "Invalid option!\n";
+        }
+
+    } while (option != 3);
+
+    delete cipher;
+    cout << "\n------Exiting------\n";
+
+    return 0;
 }
