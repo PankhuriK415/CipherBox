@@ -697,7 +697,8 @@ class AffineCipher: public Cipher
 {
 int a, b;
 Helper helper;
-public : AffineCipher(int x = 0, int y = 0): a(x), b(y)
+public : 
+AffineCipher(int x = 0, int y = 0): a(x), b(y)
 {
 if (x==0)
 {
