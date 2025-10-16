@@ -206,6 +206,7 @@ int hexCharToInt(char c)
 friend class XORCipher;
 };
 
+
 class Cipher{
 protected:
 string message;
@@ -225,6 +226,7 @@ virtual string getKeyInfo(){
 }
 virtual ~Cipher(){}
 };
+
 
 class  CaesarCipher: public Cipher{
 int shift;
@@ -253,7 +255,7 @@ else r += c;
 return r;
 }
 string decrypt(){
-string r = "" "";
+string r = "";
 for(char c : message){
 if(helper.isAlpha(c)){
 char b = helper.isUpper(c)?'A': 'a';
@@ -267,6 +269,7 @@ string getKeyInfo(){
   return "Shift=" + to_string(shift);
 }
 };
+
 
 class SubstitutionCipher: public Cipher
 {
@@ -333,6 +336,7 @@ string getKeyInfo()
 }
 };
 
+
 class XORCipher: public Cipher {
 char key;
 Helper helper;
@@ -379,6 +383,7 @@ return "Key=" + s;
 }
 };
 
+
 class ReverseCipher: public Cipher {
 Helper helper;
 public:
@@ -397,6 +402,7 @@ string operator~() {
 }
 };
 
+
 class AtbashCipher: public Cipher{
 Helper helper;
 public:
@@ -412,12 +418,15 @@ for(char c : message){
   else{
     r += c;
   }
+}
 return r;
 }
 string decrypt(){
   return encrypt();
 }
 };
+
+
 class ROT13Cipher : public Cipher
 {
 Helper helper;
@@ -444,7 +453,8 @@ string decrypt ()
     return encrypt();
 }
 };
-  
+
+
 class RailFenceCipher: public Cipher
 {
   int rails;
@@ -564,6 +574,7 @@ string getKeyInfo()
 }
 };
 
+
 class Base64Cipher : public Cipher{
 string base64_chars;
 
@@ -601,7 +612,7 @@ intT[256];
       break;
     if(T[(unsigned char)c] == -1)
       continue;
-    val = (val << 6) + T[9unsigneed char)c];
+    val = (val << 6) + T[(unsigneed char)c];
     valb +=6;
     if(valb >= 0){
       r += char((val >> valb) & 255);
@@ -614,6 +625,7 @@ string getKeyInfo(){
   return "Base64";
 }
 };
+
 
 class VigenereCipher: public Cipher {
 string key;
@@ -674,11 +686,12 @@ r += c;
 }
 return r;
 }
-string getkeyinfo()
+string getKeyInfo()
 {
 return "KEY=" + key;
 }
 };
+
 
 class AffineCipher: public Cipher
 {
