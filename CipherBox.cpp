@@ -521,7 +521,7 @@ string decrypt()
 
   for(int i = 0; i < rails; i++)
     {
-      mat[i] new char[len];
+      mat[i] = new char[len];
       mark[i] = new bool[len];
       for(int j = 0;j < len;j++)
         {
@@ -541,7 +541,7 @@ string decrypt()
             row += dir;
     }
   int idx = 0;
-  for(int i = 0; i  < raild; i++)
+  for(int i = 0; i  < rails; i++)
     for(int j = 0; j < len; j++)
       if(mark[i][j] && idx < len)
         mat[i][j] = message[idx++];
@@ -600,7 +600,7 @@ while(r.length() % 4)
 return r;
 }
 string decrypt(){
-intT[256];
+int T[256];
   for (int i = 0; i<256; i++)
     T[i] = -1;
   for(int i = 0; i<64; i++)
