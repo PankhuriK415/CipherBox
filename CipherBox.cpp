@@ -68,7 +68,7 @@ int getInput(string prompt, int minVal, int maxVal)
           }
           else
           {
-            throw string("Invalid Input! Enter a number between " + to_string(minVal) +"and" + to_string(maxVal) + "\n");
+            throw string("Invalid Input! Enter a number between " + to_string(minVal) + " and "  + to_string(maxVal) + "\n");
           }
         }
         catch (const string &e)
