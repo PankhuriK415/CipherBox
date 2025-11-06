@@ -789,6 +789,35 @@ return "a=" + to_string(a) + ", b=" + to_string(b);
 }
 };
 
+string getCipherName(int cipherChoice)
+{
+    switch (cipherChoice)
+    {
+    case 1:
+        return "Caesar Cipher";
+    case 2:
+        return "XOR Cipher";
+    case 3:
+        return "Substitution Cipher";
+    case 4:
+        return "Reverse Cipher";
+    case 5:
+        return "Atbash Cipher";
+    case 6:
+        return "ROT13 Cipher";
+    case 7:
+        return "Rail Fence Cipher";
+    case 8:
+        return "Vigenere Cipher";
+    case 9:
+        return "Affine Cipher";
+    case 10:
+        return "Base64 Cipher";
+    default:
+        return "Unknown Cipher";
+    }
+}
+
 Cipher *createCipher(int choice, string keyInfo = "")
 {
   Helper helper;
@@ -863,8 +892,6 @@ Cipher *createCipher(int choice, string keyInfo = "")
           cout << "Error creating cipher: " << e << "\n";
           return nullptr;
         }
-    }
-}
 
 int main()
 {
