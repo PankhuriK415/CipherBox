@@ -851,9 +851,13 @@ Cipher *createCipher(int choice, string keyInfo = "")
               return new ReverseCipher();
             }
           case 5:
+          {
             return new AtbashCipher();
+          }
           case 6:
+          {
             return new ROT13Cipher();
+          }
           case 7:
             {
               int rails = 0;
@@ -883,16 +887,21 @@ Cipher *createCipher(int choice, string keyInfo = "")
             return new AffineCipher(a, b);
             }
           case 10:
-            return new AffineCipher(a,b);
+          {
+            return new Base64Cipher();
+          }
           default :
+          {
             throw string("Invalid cipher choice : "+ to_string(choice));
+          }
         }
+    }
       catch(const string &e)
         {
           cout << "Error creating cipher: " << e << "\n";
           return nullptr;
         }
-
+}
 int main()
 {
     Helper helper;
