@@ -789,6 +789,82 @@ return "a=" + to_string(a) + ", b=" + to_string(b);
 }
 };
 
+Cipher *createCipher(int choice, string keyInfo = "")
+{
+  Helper helper;
+  try
+    {
+      switch(choice)
+        {
+          case 1 :
+            {
+              int shift = 0;
+              if (!keyInfo.empty() && keyInfo.find("Shift=") == 0)
+              shift = helper.stringToInt(keyInfo.substr(6));
+              return new CaesarCipher(shift);
+            }
+          case 2 :
+            {
+              char key = 0;
+              if (!keyInfo.empty() && keyInfo.find("Key=") == 0 && keyInfo.length() > 4)
+              key = keyInfo[4];
+              return new XORCipher(key);
+            }
+          case 3:
+            {
+              string key = "";
+              if (!keyInfo.empty() && keyInfo.find("Key=") == 0)
+              key = keyInfo.substr(4);
+              return new SubstitutionCipher(key);
+            }
+          case 4 :
+            {
+              return new ReverseCipher();
+            }
+          case 5:
+            return new AtbashCipher();
+          case 6:
+            return new ROT13Cipher();
+          case 7:
+            {
+              int rails = 0;
+            if (!keyInfo.empty() && keyInfo.find("Rails=") == 0)
+                rails = helper.stringToInt(keyInfo.substr(6));
+            return new RailFenceCipher(rails);
+            }
+          case 8:
+            {
+              string key = "";
+            if (!keyInfo.empty() && keyInfo.find("Key=") == 0)
+                key = keyInfo.substr(4);
+            return new VigenereCipher(key);
+            }
+          case 9 :
+            {
+              int a = 0,b = 0;
+              if (!keyInfo.empty() && keyInfo.find("a=") == 0)
+            {
+                int p = keyInfo.find(", b=");
+                if (p != string::npos)
+                {
+                    a = helper.stringToInt(keyInfo.substr(2, p - 2));
+                    b = helper.stringToInt(keyInfo.substr(p + 4));
+                }
+            }
+            return new AffineCipher(a, b);
+            }
+          case 10:
+            return new AffineCipher(a,b);
+          default :
+            throw string("Invalid cipher choice : "+ to_string(choice));
+        }
+      catch(const string &e)
+        {
+          cout << "Error creating cipher: " << e << "\n";
+          return nullptr;
+        }
+    }
+}
 
 int main()
 {
