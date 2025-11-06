@@ -139,8 +139,9 @@ int stringToInt(const string &s)
           {
             throw string("Invalid character in number");
           }
+        }  
           return neg? -result: result;            
-        }
+        
     }
       catch (const string &e)
         {
