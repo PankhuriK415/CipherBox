@@ -906,76 +906,65 @@ Cipher *createCipher(int choice, string keyInfo = "")
 int main()
 {
     Helper helper;
-    int choiceCipher;
-    string msg;
+    string text, username;
 
-    cout << "-----CipherBox-----\n";
+    cout << "===== CipherBox: Encryption-Decryption Framework =====\n";
 
-    cout << "Available Ciphers:\n";
-    cout << "1. Caesar Cipher\n2. Substitution Cipher\n3. XOR Cipher\n4. Reverse Cipher\n5. Atbash Cipher\n6. ROT13 Cipher\n7. Rail Fence Cipher\n8. Vigenere Cipher\n9. Affine Cipher\n10. Base64 Cipher\n";
-   
-    choiceCipher = helper.getInput("Select a cipher (1-10): ", 1, 10);
-
-    Cipher* cipher = nullptr;
-    switch (choiceCipher)
+    while (true)
     {
-        case 1: cipher = new CaesarCipher(); 
-          break;
-        case 2: cipher = new SubstitutionCipher(); 
-          break;
-        case 3: cipher = new XORCipher(); 
-          break;
-        case 4: cipher = new ReverseCipher(); 
-          break;
-        case 5: cipher = new AtbashCipher(); 
-          break;
-        case 6: cipher = new ROT13Cipher(); 
-          break;
-        case 7: cipher = new RailFenceCipher(); 
-          break;
-        case 8: cipher = new VigenereCipher(); 
-          break;
-        case 9: cipher = new AffineCipher(); 
-          break;
-        case 10: cipher = new Base64Cipher(); 
-          break;
-        default: cout << "Invalid choice!\n"; 
-          return 0;
-    }
-
-    int option;
-    do
-    {
-        cout << "\nChoose an option:\n1. Encrypt message\n2. Decrypt message\n3. Exit\n";
-        option = helper.getInput("Your choice: ", 1, 3);
-
-        switch (option)
+        try
         {
-            case 1:
-                cout << "Enter message to encrypt: ";
-                getline(cin, msg);
-                cipher->setMessage(msg);
-                cout << "\nEncrypted Message: " << cipher->encrypt() << "\n";
-                cout << "Key Info: " << cipher->getKeyInfo() << "\n";
-                break;
-            case 2:
-                cout << "Enter message to decrypt: ";
-                getline(cin, msg);
-                cipher->setMessage(msg);
-                cout << "\nDecrypted Message: " << cipher->decrypt() << "\n";
-                cout << "Key Info: " << cipher->getKeyInfo() << "\n";
-                break;
-            case 3:
-                cout << "Exiting program...\n";
-                break;
-            default:
-                cout << "Invalid option!\n";
-        }
+            int mainChoice = helper.getInput("Select action:\n1. Encrypt & store password\n2. Decrypt password\n3. Exit\nEnter choice: ", 1, 3);
 
-    } while (option != 3);
+            if (mainChoice == 3)
+            {
+                cout << "Exiting CipherBox. Goodbye!\n";
+                break;
+            }
 
-    delete cipher;
-    cout << "\n------Exiting------\n";
+            if (mainChoice == 1)
+            {
+                cout << "Enter username: ";
+                getline(cin, username);
+                cout << "Enter text/password to encrypt: ";
+                getline(cin, text);
 
+                int cipherChoice = helper.getInput("\nChoose Cipher Method:\n 1. Caesar Cipher\n 2. XOR Cipher\n 3. Substitution Cipher\n 4. Reverse Cipher\n 5. Atbash Cipher\n 6. ROT13 Cipher\n 7. Rail Fence Cipher\n 8. Vigenere Cipher\n 9. Affine Cipher\n 10. Base64 Cipher\n 11. Multi-Encryption Cipher\n Enter choice: ", 1, 11);
+
+int nextSession = 1;
+                try
+                {
+                    ifstream fin("data.txt");
+                    if (fin.is_open())
+                    {
+                        string line;
+                        int maxSession = 0;
+                        while (getline(fin, line))
+                        {
+                            int p1 = line.find(';');
+                            if (p1 == string::npos)
+                                continue;
+                            int p2 = line.find(';', p1 + 1);
+                            if (p2 == string::npos)
+                                continue;
+                            string sessionStr = line.substr(p1 + 1, p2 - p1 - 1);
+                            int sess = helper.stringToInt(sessionStr);
+                            if (sess > maxSession)
+                                maxSession = sess;
+                        }
+                      
+                        fin.close();
+                        nextSession = maxSession + 1;
+                    }
+                }
+                  
+                catch (const string &e)
+                {
+                    cout << "Error reading session data: " << e << "\n";
+                    continue;
+                }
+
+
+  
     return 0;
 }
