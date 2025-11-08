@@ -942,17 +942,20 @@ int main()
                         while (getline(fin, line))
                         {
                             int p1 = line.find(';');
-                            if (p1 == string::npos)
+                            if (p1 == string::npos){
                                 continue;
+                            }
                           
                             int p2 = line.find(';', p1 + 1);
-                            if (p2 == string::npos)
+                            if (p2 == string::npos){
                                 continue;
+                            }
                           
                             string sessionStr = line.substr(p1 + 1, p2 - p1 - 1);
                             int sess = helper.stringToInt(sessionStr);
-                            if (sess > maxSession)
+                            if (sess > maxSession){
                                 maxSession = sess;
+                            }
                         }
                       
                         fin.close();
@@ -990,6 +993,185 @@ int main()
                 
                 else if (cipherChoice == 11)
 
-  
+int layerChoice = helper.getInput("\nSelect number of encryption layers:\n1. Double Encryption (2 layers)\n2. Triple Encryption (3 layers)\n3. Quadruple Encryption (4 layers)\n4. Penta Encryption (5 layers)\n5. Hexa Encryption (6 layers)\n6. Hepta Encryption (7 layers)\n7. Octa Encryption (8 layers)\n8. Nona Encryption (9 layers)\n9. Deca Encryption (10 layers)\nEnter choice (1-9): ", 1, 9);
+                    int layers = layerChoice + 1;
+
+                    string current = text;
+                    for (int i = 1; i <= layers; i++)
+                    {
+                        int ch = helper.getInput("\nLayer " + to_string(i) + ": Choose cipher method (1-10):\n1. Caesar Cipher\n2. XOR Cipher\n3. Substitution Cipher\n4. Reverse Cipher\n5. Atbash Cipher\n6. ROT13 Cipher\n7. Rail Fence Cipher\n8. Vigenere Cipher\n9. Affine Cipher\n10. Base64 Cipher\nEnter choice: ", 1, 10);
+
+                        Cipher *cipher = createCipher(ch);
+                        if (!cipher){
+                            throw string("Failed to create cipher for layer " + to_string(i));
+                        }
+                        cipher->setMessage(current);
+                        string encrypted = cipher->encrypt();
+
+                        ofstream fout("data.txt", ios::app);
+                        if (!fout.is_open()){
+                            throw string("Unable to open data.txt for writing");
+                        }
+                        fout << username << ";" << nextSession << ";" << i << ";" << ch << ";" << cipher->getKeyInfo() << ";" << encrypted << "\n";
+                        fout.close();
+
+                        cout << "Step " << i << ": Layer " << i << " encrypted using "
+                             << getCipherName(ch) << " | Key Info: " << cipher->getKeyInfo() << "\n";
+
+                        current = encrypted;
+                        delete cipher;
+                    }
+                    cout << "\nPassword stored successfully! (session " << nextSession << ")\n";
+                }
+            }
+
+else if (mainChoice == 2)
+            { 
+                cout << "Enter username to decrypt password: ";
+                getline(cin, username);
+
+
+                int latestSession = -1;
+                try
+                {
+                    ifstream fin("data.txt");
+                    if (!fin.is_open()){
+                        throw string("No data file found. No password stored yet.");
+                    }
+                    string line;
+                    while (getline(fin, line))
+                    {
+                        int p1 = line.find(';');
+                        if (p1 == string::npos){
+                            continue;
+                        }
+                        string userPart = line.substr(0, p1);
+                        if (userPart != username){
+                            continue;
+                        }
+                        int p2 = line.find(';', p1 + 1);
+                        if (p2 == string::npos){
+                            continue;
+                        }
+                        string sessionStr = line.substr(p1 + 1, p2 - p1 - 1);
+                        int sess = helper.stringToInt(sessionStr);
+                        if (sess > latestSession){
+                            latestSession = sess;
+                        }
+                    }
+                    fin.close();
+                }
+                catch (const string &e)
+                {
+                    cout << e << "\n";
+                    continue;
+                }
+
+                if (latestSession == -1)
+                {
+                    cout << "No password found for username!\n";
+                    continue;
+                }
+
+int maxLayer = 0;
+                try
+                {
+                    ifstream fin("data.txt");
+                    if (!fin.is_open()){
+                        throw string("Unable to open data.txt for reading");
+                    }
+                    string line;
+                    while (getline(fin, line))
+                    {
+                        int p1 = line.find(';');
+                        if (p1 == string::npos){
+                            continue;
+                        }
+                        string userPart = line.substr(0, p1);
+                        if (userPart != username){
+                            continue;
+                        }
+                        int p2 = line.find(';', p1 + 1);
+                        if (p2 == string::npos){
+                            continue;
+                        }
+                        string sessionStr = line.substr(p1 + 1, p2 - p1 - 1);
+                        int sess = helper.stringToInt(sessionStr);
+                        if (sess != latestSession){
+                            continue;
+                        }
+                        int p3 = line.find(';', p2 + 1);
+                        if (p3 == string::npos){
+                            continue;
+                        }
+                        string layerStr = line.substr(p2 + 1, p3 - p2 - 1);
+                        int layerIdx = helper.stringToInt(layerStr);
+                        if (layerIdx > maxLayer){
+                            maxLayer = layerIdx;
+                        }
+                    }
+                    fin.close();
+                }
+                catch (const string &e)
+                {
+                    cout << "Error reading layers: " << e << "\n";
+                    continue;
+                }
+
+                if (maxLayer == 0)
+                {
+                    cout << "No layers found for username/session!\n";
+                    continue;
+                }  
+              int maxLayer = 0;
+                try
+                {
+                    ifstream fin("data.txt");
+                    if (!fin.is_open()){
+                        throw string("Unable to open data.txt for reading");
+                    }
+                    string line;
+                    while (getline(fin, line))
+                    {
+                        int p1 = line.find(';');
+                        if (p1 == string::npos){
+                            continue;
+                        }
+                        string userPart = line.substr(0, p1);
+                        if (userPart != username){
+                            continue;
+                        }
+                        int p2 = line.find(';', p1 + 1);
+                        if (p2 == string::npos){
+                            continue;
+                        }
+                        string sessionStr = line.substr(p1 + 1, p2 - p1 - 1);
+                        int sess = helper.stringToInt(sessionStr);
+                        if (sess != latestSession){
+                            continue;
+                        }
+                        int p3 = line.find(';', p2 + 1);
+                        if (p3 == string::npos){
+                            continue;
+                        }
+                        string layerStr = line.substr(p2 + 1, p3 - p2 - 1);
+                        int layerIdx = helper.stringToInt(layerStr);
+                        if (layerIdx > maxLayer){
+                            maxLayer = layerIdx;
+                        }
+                    }
+                    fin.close();
+                }
+                catch (const string &e)
+                {
+                    cout << "Error reading layers: " << e << "\n";
+                    continue;
+                }
+
+                if (maxLayer == 0)
+                {
+                    cout << "No layers found for username/session!\n";
+                    continue;
+                }
     return 0;
 }
