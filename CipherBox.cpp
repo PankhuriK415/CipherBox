@@ -931,7 +931,7 @@ int main()
 
                 int cipherChoice = helper.getInput("\nChoose Cipher Method:\n 1. Caesar Cipher\n 2. XOR Cipher\n 3. Substitution Cipher\n 4. Reverse Cipher\n 5. Atbash Cipher\n 6. ROT13 Cipher\n 7. Rail Fence Cipher\n 8. Vigenere Cipher\n 9. Affine Cipher\n 10. Base64 Cipher\n 11. Multi-Encryption Cipher\n Enter choice: ", 1, 11);
 
-int nextSession = 1;
+            int nextSession = 1;
                 try
                 {
                     ifstream fin("data.txt");
@@ -944,9 +944,11 @@ int nextSession = 1;
                             int p1 = line.find(';');
                             if (p1 == string::npos)
                                 continue;
+                          
                             int p2 = line.find(';', p1 + 1);
                             if (p2 == string::npos)
                                 continue;
+                          
                             string sessionStr = line.substr(p1 + 1, p2 - p1 - 1);
                             int sess = helper.stringToInt(sessionStr);
                             if (sess > maxSession)
@@ -963,7 +965,30 @@ int nextSession = 1;
                     cout << "Error reading session data: " << e << "\n";
                     continue;
                 }
+              
+                if (cipherChoice >= 1 && cipherChoice <= 10)
+                {
+                    Cipher *cipher = createCipher(cipherChoice);
+                  
+                    if (!cipher)
+                        throw string("Failed to create cipher");
+                    cipher->setMessage(text);
+                    string encrypted = cipher->encrypt();
 
+                    cout << "Step 1: Layer one encrypted using " << getCipherName(cipherChoice) << " | Key Info: " << cipher->getKeyInfo() << "\n";
+
+                    ofstream fout("data.txt", ios::app);
+                    if (!fout.is_open())
+                        throw string("Unable to open data.txt for writing");
+                  
+                    fout << username << ";" << nextSession << ";1;" << cipherChoice << ";" << cipher->getKeyInfo() << ";" << encrypted << "\n";
+                    fout.close();
+
+                    cout << "Password stored successfully (session " << nextSession << ")\n";
+                    delete cipher;
+                }
+                
+                else if (cipherChoice == 11)
 
   
     return 0;
