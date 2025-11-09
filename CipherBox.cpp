@@ -1173,5 +1173,55 @@ int maxLayer = 0;
                     cout << "No layers found for username/session!\n";
                     continue;
                 }
+              
+                string *layersArr = new string[maxLayer + 1];
+                for (int i = 1; i <= maxLayer; i++)
+                    layersArr[i] = "";
+
+                try
+                {
+                    ifstream fin("data.txt");
+                    if (!fin.is_open())
+                        throw string("Unable to open data.txt for reading");
+                    string line;
+                    while (getline(fin, line))
+                    {
+                        int p1 = line.find(';');
+                        if (p1 == string::npos)
+                            continue;
+                      
+                        string userPart = line.substr(0, p1);
+                        if (userPart != username)
+                            continue;
+                      
+                        int p2 = line.find(';', p1 + 1);
+                        if (p2 == string::npos)
+                            continue;
+                      
+                        string sessionStr = line.substr(p1 + 1, p2 - p1 - 1);
+                        int sess = helper.stringToInt(sessionStr);
+                        if (sess != latestSession)
+                            continue;
+                      
+                        int p3 = line.find(';', p2 + 1);
+                        if (p3 == string::npos)
+                            continue;
+                      
+                        string layerStr = line.substr(p2 + 1, p3 - p2 - 1);
+                        int layerIdx = helper.stringToInt(layerStr);
+                        string remainder = line.substr(p3 + 1);
+                        if (layerIdx >= 1 && layerIdx <= maxLayer)
+                            layersArr[layerIdx] = remainder;
+                    }
+                    fin.close();
+                }
+                  
+                catch (const string &e)
+                {
+                    cout << "Error reading layer data: " << e << "\n";
+                    delete[] layersArr;
+                    continue;
+                }
+              
     return 0;
 }
