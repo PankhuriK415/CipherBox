@@ -991,10 +991,10 @@ int main()
                     delete cipher;
                 }
                 
-                else if (cipherChoice == 11)
+                else if (cipherChoice == 11)
 
 int layerChoice = helper.getInput("\nSelect number of encryption layers:\n1. Double Encryption (2 layers)\n2. Triple Encryption (3 layers)\n3. Quadruple Encryption (4 layers)\n4. Penta Encryption (5 layers)\n5. Hexa Encryption (6 layers)\n6. Hepta Encryption (7 layers)\n7. Octa Encryption (8 layers)\n8. Nona Encryption (9 layers)\n9. Deca Encryption (10 layers)\nEnter choice (1-9): ", 1, 9);
-                    int layers = layerChoice + 1;
+                    int layers = cipherChoice + 1;
 
                     string current = text;
                     for (int i = 1; i <= layers; i++)
@@ -1023,15 +1023,14 @@ int layerChoice = helper.getInput("\nSelect number of encryption layers:\n1. Dou
                     }
                     cout << "\nPassword stored successfully! (session " << nextSession << ")\n";
                 }
-            }
 
 else if (mainChoice == 2)
             { 
                 cout << "Enter username to decrypt password: ";
                 getline(cin, username);
-
-
                 int latestSession = -1;
+                int maxLayer = 0;
+                string *layersArr = nullptr;
                 try
                 {
                     ifstream fin("data.txt");
@@ -1072,8 +1071,6 @@ else if (mainChoice == 2)
                     cout << "No password found for username!\n";
                     continue;
                 }
-
-int maxLayer = 0;
                 try
                 {
                     ifstream fin("data.txt");
@@ -1123,7 +1120,6 @@ int maxLayer = 0;
                     cout << "No layers found for username/session!\n";
                     continue;
                 }  
-              int maxLayer = 0;
                 try
                 {
                     ifstream fin("data.txt");
@@ -1174,7 +1170,7 @@ int maxLayer = 0;
                     continue;
                 }
               
-                string *layersArr = new string[maxLayer + 1];
+                layersArr = new string[maxLayer + 1];
                 for (int i = 1; i <= maxLayer; i++)
                     layersArr[i] = "";
 
@@ -1222,7 +1218,7 @@ int maxLayer = 0;
                     delete[] layersArr;
                     continue;
                 }
-
+            }
               string current = "";
                 bool first = true;
                 int step = 1;
@@ -1271,7 +1267,6 @@ int maxLayer = 0;
 
                 delete[] layersArr;
                 cout << "\nDecrypted Password: " << current << "\n";
-            }
         }
         catch (const string &e)
         {
@@ -1282,6 +1277,5 @@ int maxLayer = 0;
         }
     }
 
-    return 0;
+return 0;
 }
-              
