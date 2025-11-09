@@ -1222,6 +1222,66 @@ int maxLayer = 0;
                     delete[] layersArr;
                     continue;
                 }
-              
-    return 0;
+
+              string current = "";
+                bool first = true;
+                int step = 1;
+                for (int li = maxLayer; li >= 1; li--)
+                {
+                    string entry = layersArr[li];
+                    if (entry.empty())
+                    {
+                        cout << "Missing layer " << li << " for session " << latestSession << ". Aborting.\n";
+                        current = "[Decryption aborted: missing layer]";
+                        break;
+                    }
+                    int q1 = entry.find(';');
+                    int q2 = entry.find(';', q1 + 1);
+                    if (q1 == string::npos || q2 == string::npos)
+                    {
+                        cout << "Malformed layer data at layer " << li << ". Aborting.\n";
+                        current = "[Decryption aborted: malformed layer data]";
+                        break;
+                    }
+                    string cipherChoiceStr = entry.substr(0, q1);
+                    int cipherChoice = helper.stringToInt(cipherChoiceStr);
+                    string keyInfo = entry.substr(q1 + 1, q2 - q1 - 1);
+                    string encrypted = entry.substr(q2 + 1);
+
+                    Cipher *cipher = createCipher(cipherChoice, keyInfo);
+                    if (!cipher)
+                        throw string("Failed to create cipher for decryption at layer " + to_string(li));
+                    cipher->setMessage(encrypted);
+
+                    cout << "Step " << step << ": Layer " << li << " decrypted using " << getCipherName(cipherChoice) << "\n";
+                    string decrypted = cipher->decrypt();
+                    delete cipher;
+
+                    if (first)
+                    {
+                        current = decrypted;
+                        first = false;
+                    }
+                    else
+                    {
+                        current = decrypted;
+                    }
+                    step++;
+                }
+
+                delete[] layersArr;
+                cout << "\nDecrypted Password: " << current << "\n";
+            }
+        }
+        catch (const string &e)
+        {
+            cout << "Error in main loop: " << e << "\n";
+            cin.clear();
+            string bad;
+            getline(cin, bad);
+        }
+    }
+
+    return 0;
 }
+              
