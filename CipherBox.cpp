@@ -1218,7 +1218,6 @@ else if (mainChoice == 2)
                     delete[] layersArr;
                     continue;
                 }
-            }
               string current = "";
                 bool first = true;
                 int step = 1;
@@ -1267,6 +1266,7 @@ else if (mainChoice == 2)
 
                 delete[] layersArr;
                 cout << "\nDecrypted Password: " << current << "\n";
+              }
         }
         catch (const string &e)
         {
